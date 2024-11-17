@@ -9,6 +9,7 @@ export const getPopulationResponseSchema = z.object({
     boundaryYear: z.number(),
     data: z.array(
       z.object({
+        label: z.string(),
         data: z.array(
           z.object({
             year: z.number(),
@@ -29,7 +30,6 @@ export default function useGetPopulationRequest(prefCode: string) {
   // const [prefCode, setPrefCode] = useState<string>("");
 
   const fetcher = useCallback(() => {
-    console.log("url:", requestURL);
     return axios
       .get(requestURL, {
         params: { prefCode: prefCode },
