@@ -1,7 +1,6 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
-import useSWR from "swr";
-import { z } from "zod";
+import axios from 'axios';
+import useSWRMutation from 'swr/mutation';
+import { z } from 'zod';
 
 export const getPopulationResponseSchema = z.object({
   message: z.string().nullable(),
@@ -24,18 +23,17 @@ export const getPopulationResponseSchema = z.object({
 
 export type GetPopulationResponse = z.infer<typeof getPopulationResponseSchema>;
 
-export default function useGetPopulationRequest(prefCode: string) {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL || "";
-  const requestURL = baseURL + "/api/v1/population/composition/perYear";
-  // const [prefCode, setPrefCode] = useState<string>("");
+export default function useGetPopulationRequest() {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL || '';
+  const requestURL = baseURL + '/api/v1/population/composition/perYear';
 
-  const fetcher = useCallback(() => {
+  const fetcher = (url: string, { arg }: { arg: string }) => {
     return axios
-      .get(requestURL, {
-        params: { prefCode: prefCode },
+      .get(url, {
+        params: { prefCode: arg },
         headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          "X-API-KEY": "8FzX5qLmN3wRtKjH7vCyP9bGdEaU4sYpT6cMfZnJ",
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-API-KEY': '8FzX5qLmN3wRtKjH7vCyP9bGdEaU4sYpT6cMfZnJ',
         },
       })
       .then(async (response) => {
@@ -43,15 +41,12 @@ export default function useGetPopulationRequest(prefCode: string) {
         return getPopulationResponseSchema.parse(result);
       })
       .catch((error) => {
-        console.log("error:", error);
+        console.log('error:', error);
         throw error;
       });
-  }, [requestURL, prefCode]);
+  };
 
-  const { data, error, isLoading } = useSWR<GetPopulationResponse>(
-    requestURL,
-    fetcher
-  );
+  const { error, isMutating, trigger } = useSWRMutation(requestURL, fetcher);
 
-  return { data, error, isLoading };
+  return { error, isMutating, trigger };
 }
