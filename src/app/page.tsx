@@ -3,6 +3,7 @@
 import Prefecture from '@/features/prefecture/components/prefecture';
 import Population from '@/features/population-graph/components/population';
 import { useState } from 'react';
+import RadioButton from '@/components/button/radio-button';
 
 export default function App() {
   const [dataNumber, setDataNumber] = useState<number>(0);
@@ -14,9 +15,14 @@ export default function App() {
     );
   };
 
+  const handleDataNumberChange = (value: number) => {
+    setDataNumber(value);
+  };
+
   return (
     <>
       <Prefecture handleValueChange={handlePrefectureChange} />
+      <RadioButton handleValueChange={handleDataNumberChange}></RadioButton>
       <Population prefectures={prefectures} dataNumber={dataNumber} />
     </>
   );
