@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useGetPopulationRequest, { GetPopulationResponse } from '../api/get-population';
+import useGetPopulationRequest from '../api/get-population';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
 export type Prefectures = {
-  prefCode: string;
+  prefCode: number;
   prefName: string;
 };
 
@@ -40,16 +40,22 @@ export default function Population(props: Props) {
     setGraphData(results);
   };
 
+  const titleText: { [key: number]: string } = {
+    0: '総人口',
+    1: '年少人口',
+    2: '生産年齢人口',
+    3: '老年人口',
+  };
+
   useEffect(() => {
     fetchData();
-    console.log(graphData);
   }, [props.prefectures, props.dataNumber]);
 
   const options =
     graphData.length > 0
       ? {
           title: {
-            text: '人口の推移',
+            text: titleText[props.dataNumber] + 'の推移',
           },
           xAxis: {
             title: { text: '年' },

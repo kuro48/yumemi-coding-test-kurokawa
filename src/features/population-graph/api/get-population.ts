@@ -27,7 +27,7 @@ export default function useGetPopulationRequest() {
   const baseURL = process.env.NEXT_PUBLIC_API_URL || '';
   const requestURL = baseURL + '/api/v1/population/composition/perYear';
 
-  const fetcher = (url: string, { arg }: { arg: string }) => {
+  const fetcher = (url: string, { arg }: { arg: number }) => {
     return axios
       .get(url, {
         params: { prefCode: arg },
@@ -41,7 +41,6 @@ export default function useGetPopulationRequest() {
         return getPopulationResponseSchema.parse(result);
       })
       .catch((error) => {
-        console.log('error:', error);
         throw error;
       });
   };
