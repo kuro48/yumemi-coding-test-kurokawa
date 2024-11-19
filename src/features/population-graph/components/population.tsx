@@ -43,7 +43,7 @@ export default function Population(props: Props) {
   useEffect(() => {
     fetchData();
     console.log(graphData);
-  }, []);
+  }, [props.prefectures, props.dataNumber]);
 
   const options =
     graphData.length > 0
@@ -68,7 +68,6 @@ export default function Population(props: Props) {
   return (
     <>
       {isMutating && <div> グラフを準備中</div>}
-      {!options && <div> データ取得エラー </div>}
       {error && <div>Error: {error.message}</div>}
       {graphData && <HighchartsReact highcharts={Highcharts} options={options} />}
     </>
