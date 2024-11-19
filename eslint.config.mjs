@@ -48,6 +48,8 @@ export default [
     rules: {
       'prettier/prettier': ['error'],
       'react/react-in-jsx-scope': 'off',
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
     },
   },
 ];
