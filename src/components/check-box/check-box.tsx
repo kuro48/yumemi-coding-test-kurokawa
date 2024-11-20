@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type Props = {
   prefCode: number;
   prefName: string;
